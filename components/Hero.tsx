@@ -1,7 +1,11 @@
+'use client';
+
 import React from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Rocket, Github, Linkedin, Mouse } from 'lucide-react';
 import { SectionId } from '../types';
+import { useQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 
 const MotionH2 = motion.h2;
 const MotionH1 = motion.h1;
@@ -12,9 +16,21 @@ interface HeroProps {
   id: SectionId;
 }
 
+interface HeroText {
+  title: string;
+  subtitle: string;
+  description: string;
+  isActive: boolean;
+}
+
 const Hero: React.FC<HeroProps> = ({ id }) => {
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+  const [videoLoaded, setVideoLoaded] = React.useState(false);
+  
+  // Use Convex useQuery hook to fetch hero text data
+  const heroTexts = useQuery(api.heroText.getHeroText);
+  const heroText = heroTexts?.find((hero) => hero.isActive);
 
   return (
     <section id={id} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black pt-16 md:pt-0">
@@ -24,11 +40,20 @@ const Hero: React.FC<HeroProps> = ({ id }) => {
           Replace the src below with your specific image URL.
           The image currently covers the full container.
         */}
+        {!videoLoaded ? (
         <img
           src="https://cdn.jsdelivr.net/gh/Pravin-123456/Portfolio@assets/src/assets/background.webp"
           alt="Hero Background"
           className="w-full h-full object-cover"
-        />
+        />):
+         (<video
+          src="https://cdn.jsdelivr.net/gh/Pravin-123456/Portfolio@assets/src/assets/Project_video/backgroundVid.mp4"
+          autoPlay
+          loop
+          muted
+          className="w-full h-full object-cover"
+          onLoadedData={() => setVideoLoaded(true)}
+        />)}
 
         {/* Gradient Overlay - Darkens left side for text readability, completely clear on right for subject focus */}
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent" />
@@ -50,7 +75,7 @@ const Hero: React.FC<HeroProps> = ({ id }) => {
             viewport={{ once: true }}
             className="text-4xl md:text-3xl font-bold text-white tracking-tight"
           >
-            Hi I&apos;M PRAVIN
+            {heroText?.title || 'Welcome'}
           </MotionH2>
 
           <MotionH1
@@ -59,7 +84,7 @@ const Hero: React.FC<HeroProps> = ({ id }) => {
             transition={{ delay: 0.2 }}
             className="text-6xl md:text-6xl lg:text-6xl 2xl:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-400 drop-shadow-2xl"
           >
-            MERN DEV
+            {heroText?.subtitle || 'Full Stack Developer'}
           </MotionH1>
 
           <MotionP
@@ -68,7 +93,7 @@ const Hero: React.FC<HeroProps> = ({ id }) => {
             transition={{ delay: 0.4 }}
             className="text-md md:text-lg text-gray-300 max-w-lg xl:max-w-2xl 2xl:max-w-4xl leading-relaxed"
           >
-            I ship pixel-perfect, lightning-fast web apps that feel like magic.
+            {heroText?.description || 'Building amazing web experiences with modern technologies.'}
           </MotionP>
           <a href='#projects'>
           <MotionDiv

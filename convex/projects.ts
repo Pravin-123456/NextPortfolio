@@ -11,6 +11,7 @@ export const addProject = mutation({
     image: v.string(),
     liveUrl: v.string(),
     githubUrl: v.string(),
+    isActive: v.boolean(),
   },
   handler: async ({ db }, data) => {
     return await db.insert("projects", data);
@@ -33,6 +34,7 @@ export const updateProject = mutation({
     image: v.optional(v.string()),
     liveUrl: v.optional(v.string()),
     githubUrl: v.optional(v.string()),
+    isActive: v.optional(v.boolean()),
   },
   handler: async ({ db }, { _id, ...updates }) => {
     await db.patch(_id, updates);

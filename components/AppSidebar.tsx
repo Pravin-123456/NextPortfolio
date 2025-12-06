@@ -50,7 +50,7 @@ const AppSidebar = () => {
         <SidebarHeader>
             <SidebarMenu>
                 <SidebarMenuItem>
-                    <h2 className='text-lg font-bold'>Pravin <span className='text-purple-500'>Portfolio</span></h2>
+                    <Link href='/'><h2 className='text-lg font-bold'>Pravin <span className='text-purple-500'>Portfolio</span></h2></Link>
                 </SidebarMenuItem>
             </SidebarMenu>
         </SidebarHeader>

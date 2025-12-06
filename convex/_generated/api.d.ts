@@ -8,8 +8,11 @@
  * @module
  */
 
+import type * as about from "../about.js";
+import type * as heroText from "../heroText.js";
 import type * as projects from "../projects.js";
 import type * as proschema from "../proschema.js";
+import type * as skills from "../skills.js";
 
 import type {
   ApiFromModules,
@@ -18,8 +21,11 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  about: typeof about;
+  heroText: typeof heroText;
   projects: typeof projects;
   proschema: typeof proschema;
+  skills: typeof skills;
 }>;
 
 /**

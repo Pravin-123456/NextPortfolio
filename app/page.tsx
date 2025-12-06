@@ -31,7 +31,10 @@ export default function Home() {
           }
         });
       },
-      { threshold: 0.5 } // Trigger when 50% of the section is visible
+      { 
+        threshold: 0.3, // Trigger when 30% of the section is visible
+        rootMargin: '-100px 0px -100px 0px' // Offset to trigger earlier
+      }
     );
 
     const sections = Object.values(SectionId).map((id) => document.getElementById(id));

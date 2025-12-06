@@ -1,7 +1,11 @@
+'use client';
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { SectionId } from '../types';
 import { ArrowRight } from 'lucide-react';
+import { useQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 
 const MotionDiv = motion.div;
 
@@ -10,6 +14,18 @@ interface AboutProps {
 }
 
 const About: React.FC<AboutProps> = ({ id }) => {
+  // Fetch about data from Convex
+  const aboutData = useQuery(api.about.getAbout);
+  const aboutText = aboutData?.find((about) => about.isActive);
+
+  // Show loading state if data hasn't loaded yet
+  if (!aboutData) {
+    return (
+      <section id={id} className="relative min-h-screen w-full bg-black overflow-hidden flex flex-col justify-center">
+        <div className="text-white text-xl text-center">Loading...</div>
+      </section>
+    );
+  }
   return (
     <section id={id} className="relative min-h-screen w-full bg-black overflow-hidden flex flex-col justify-center">
       
@@ -34,10 +50,9 @@ const About: React.FC<AboutProps> = ({ id }) => {
              transition={{ duration: 0.8, delay: 0.2 }}
              className="text-gray-300 space-y-6 2xl:space-y-10 md:pl-12"
            >
-             <h3 className="text-2xl 2xl:text-4xl font-bold text-white">Hey, I&apos;m Pravin.</h3>
+             <h3 className="text-2xl 2xl:text-4xl font-bold text-white">{aboutText?.title || "About Me"}</h3>
              <p className="text-lg 2xl:text-3xl leading-relaxed text-gray-400 2xl:leading-loose">
-               I turn ideas into fast, beautiful web apps that don&apos;t break when real people use them. 
-               React + Next.js on the front, Node.js magic in the back. Clean code, happy users — that&apos;s my thing.
+               {aboutText?.description || "Full-stack developer passionate about creating amazing web experiences."}
              </p>
            </MotionDiv>
         </div>
@@ -71,10 +86,18 @@ const About: React.FC<AboutProps> = ({ id }) => {
               >
                  <ArrowRight className="w-32 h-32 2xl:w-56 2xl:h-56 text-pink-300 rotate-90 md:rotate-0" strokeWidth={3} />
               </MotionDiv>
-
-              <button className="px-8 py-3 xl:px-4 xl:py-2 2xl:px-8 2xl:py-4 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full font-bold text-white xl:text-lg 2xl:text-xl hover:scale-105 transition-transform shadow-xl">
-                Grab my CV
-              </button>
+              {aboutText?.resume && (
+                <a 
+                  href={aboutText.resume}  
+                  download="Pravin_Resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <button className="px-8 py-3 xl:px-4 xl:py-2 2xl:px-8 2xl:py-4 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full font-bold text-white xl:text-lg 2xl:text-xl hover:scale-105 transition-transform shadow-xl">
+                    Grab my CV
+                  </button>
+                </a>
+              )}
            </div>
         </div>
       </div>

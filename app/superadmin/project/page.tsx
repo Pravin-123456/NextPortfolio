@@ -9,6 +9,7 @@ import { api } from '@/convex/_generated/api'
 import { useMutation, useQuery } from 'convex/react'
 import React, { useState } from 'react'
 import { Id } from '@/convex/_generated/dataModel'
+import { Plus } from 'lucide-react'
 
 interface ProjectFormData {
   id: string
@@ -18,6 +19,7 @@ interface ProjectFormData {
   image: string
   liveUrl: string
   githubUrl: string
+  isActive: boolean
 }
 
 const ProjectsPage = () => {
@@ -39,6 +41,7 @@ const ProjectsPage = () => {
     image: '',
     liveUrl: '',
     githubUrl: '',
+    isActive: true,
   })
 
   const resetForm = () => {
@@ -50,6 +53,7 @@ const ProjectsPage = () => {
       image: '',
       liveUrl: '',
       githubUrl: '',
+      isActive: true,
     })
     setEditingProject(null)
   }
@@ -69,6 +73,7 @@ const ProjectsPage = () => {
       image: project.image,
       liveUrl: project.liveUrl,
       githubUrl: project.githubUrl,
+      isActive: project.isActive ?? true,
     })
     setIsModalOpen(true)
   }
@@ -89,6 +94,7 @@ const ProjectsPage = () => {
       image: formData.image,
       liveUrl: formData.liveUrl,
       githubUrl: formData.githubUrl,
+      isActive: formData.isActive,
     }
 
     try {
@@ -129,7 +135,7 @@ const ProjectsPage = () => {
     <>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Projects</h2>
-        <Button onClick={handleOpenAddModal}>+ Add Project</Button>
+        <Button onClick={handleOpenAddModal} className='cursor-pointer'><Plus /> Add Project</Button>
       </div>
       
       <Table className='mx-auto mt-10'>
@@ -138,6 +144,7 @@ const ProjectsPage = () => {
             <TableHead className='text-center'>ID</TableHead>
             <TableHead className='text-center'>Title</TableHead>
             <TableHead className='text-center'>Description</TableHead>
+            <TableHead className='text-center'>Is Active</TableHead>
             <TableHead className='text-center'>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -150,6 +157,15 @@ const ProjectsPage = () => {
                 {project.description.length > 50 
                   ? project.description.slice(0, 50) + "..." 
                   : project.description}
+              </TableCell>
+              <TableCell className='text-center'>
+                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                  project.isActive 
+                    ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
+                    : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
+                }`}>
+                  {project.isActive ? 'Active' : 'Inactive'}
+                </span>
               </TableCell>
               <TableCell className='flex justify-center gap-2'>
                 <Button 
@@ -249,6 +265,19 @@ const ProjectsPage = () => {
               value={formData.githubUrl}
               onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
             />
+          </div>
+
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="isActive"
+              checked={formData.isActive}
+              onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+              className="w-4 h-4 cursor-pointer"
+            />
+            <label htmlFor="isActive" className="text-sm font-medium cursor-pointer">
+              Active (visible on portfolio)
+            </label>
           </div>
 
           <div className="flex gap-3 pt-4">

@@ -1,6 +1,10 @@
+'use client';
+
 import React from 'react';
 import { SectionId } from '../types';
 import { motion } from 'framer-motion';
+import { useQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 
 const MotionDiv = motion.div;
 const MotionRect = motion.rect;
@@ -14,29 +18,9 @@ interface Skill {
   name: string;
   icon: string;
   percentage: number;
-  isCenter?: boolean;
-  isLeft?: boolean;
-  isRight?: boolean;
+  position: string;
+  isActive?: boolean;
 }
-
-// Configuration for the Skills
-// Center is Next.js
-const skillsData: Skill[] = [
-  // Left Group
-  { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', percentage: 90, isLeft: true },
-  { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', percentage: 85, isLeft: true },
-  { name: 'Express', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg', percentage: 80, isLeft: true },
-  { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg', percentage: 75, isLeft: true },
-  
-  // Center Item
-  { name: 'Next.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg', percentage: 95, isCenter: true },
-  
-  // Right Group
-  { name: 'Tailwind', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg', percentage: 95, isRight: true },
-  { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', percentage: 90, isRight: true },
-  { name: 'TypeScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg', percentage: 85, isRight: true },
-  { name: 'PostgreSQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg', percentage: 70, isRight: true },
-];
 
 interface SkillItemProps {
   skill: Skill;
@@ -46,7 +30,7 @@ interface SkillItemProps {
 // Defined BEFORE usage to prevent ReferenceError
 const SkillItem: React.FC<SkillItemProps> = ({ skill, index }) => {
     // Central Item Style (Glowing Orb)
-    if (skill.isCenter) {
+    if (skill?.position === 'center') {
         return (
             <MotionDiv
                 initial={{ scale: 0.5, opacity: 0 }}
@@ -77,7 +61,7 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, index }) => {
                         initial={{ pathLength: 0}}
                         whileInView={{ opacity: 0.1 }}
                         whileHover={{ 
-                            pathLength: skill.percentage / 100, 
+                            pathLength: skill?.percentage / 100, 
                             opacity: 1,
                             transition: { duration: 1, ease: "easeOut" }
                         }}
@@ -88,13 +72,13 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, index }) => {
                 {/* Main Sphere - Theme: White/Purple Tint */}
                 <div className="absolute inset-1 rounded-full bg-gradient-to-br from-white via-purple-100 to-violet-200 shadow-[0_0_50px_rgba(168,85,247,0.5)] flex items-center justify-center z-10 overflow-hidden">
                     <img 
-                        src={skill.icon} 
-                        alt={skill.name} 
+                        src={skill?.icon} 
+                        alt={skill?.name} 
                         className="w-12 h-12 md:w-24 md:h-24 2xl:w-32 2xl:h-32 object-contain group-hover:scale-90 group-hover:opacity-20 group-hover:grayscale transition-all duration-500" 
                     />
                     {/* Percentage Text on Hover */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span className="text-2xl md:text-5xl font-bold text-purple-600">{skill.percentage}%</span>
+                        <span className="text-2xl md:text-5xl font-bold text-purple-600">{skill?.percentage}%</span>
                     </div>
                 </div>
             </MotionDiv>
@@ -132,7 +116,7 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, index }) => {
                     strokeLinecap="round"
                     initial={{ pathLength: 0, opacity: 0 }}
                     whileHover={{ 
-                        pathLength: skill.percentage / 100,
+                        pathLength: skill?.percentage / 100,
                         opacity: 1,
                         transition: { duration: 1.2, ease: "easeInOut" }
                     }}
@@ -148,14 +132,14 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, index }) => {
             {/* Content Container */}
             <div className="relative z-10 flex flex-col items-center justify-center">
                 <img 
-                    src={skill.icon} 
-                    alt={skill.name} 
+                    src={skill?.icon} 
+                    alt={skill?.name}
                     className="w-10 h-10 md:w-14 md:h-14 2xl:w-20 2xl:h-20 object-contain opacity-100 group-hover:opacity-20 group-hover:grayscale transition-all duration-300 group-hover:scale-90" 
                 />
                 
                 {/* Percentage Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-1">
-                    <span className="text-xl md:text-2xl font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{skill.percentage}%</span>
+                    <span className="text-xl md:text-2xl font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{skill?.percentage}%</span>
                 </div>
             </div>
         </MotionDiv>
@@ -163,10 +147,23 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, index }) => {
 };
 
 const Skills: React.FC<SkillsProps> = ({ id }) => {
-  // Explicit positioning logic
-  const centerSkill = skillsData.find(s => s.isCenter) || skillsData[Math.floor(skillsData.length / 2)];
-  const leftSkills = skillsData.filter(s => s.isLeft);
-  const rightSkills = skillsData.filter(s => s.isRight);
+  // Fetch skills from Convex
+  const skillsData = useQuery(api.skills.getSkills);
+
+  // Show loading state if data hasn't loaded yet
+  if (!skillsData) {
+    return (
+      <section id={id} className="min-h-screen w-full bg-black flex flex-col justify-center py-24 relative overflow-hidden">
+        <div className="text-white text-xl text-center">Loading skills...</div>
+      </section>
+    );
+  }
+
+  // Filter active skills and organize by position
+  const activeSkills = skillsData.filter(s => s.isActive);
+  const centerSkill = activeSkills.find(s => s.position === 'center');
+  const leftSkills = activeSkills.filter(s => s.position === 'left');
+  const rightSkills = activeSkills.filter(s => s.position === 'right');
 
   return (
     <section id={id} className="min-h-screen w-full bg-black flex flex-col justify-center py-24 relative overflow-hidden">
@@ -192,7 +189,7 @@ const Skills: React.FC<SkillsProps> = ({ id }) => {
                     {/* Left 2x2 Grid */}
                     <div className="grid grid-cols-2 gap-4 xl:gap-6">
                         {leftSkills.map((skill, index) => (
-                            <SkillItem key={skill.name} skill={skill} index={index} />
+                            <SkillItem key={skill?.name} skill={skill} index={index} />
                         ))}
                     </div>
 
@@ -204,15 +201,15 @@ const Skills: React.FC<SkillsProps> = ({ id }) => {
                     {/* Right 2x2 Grid */}
                     <div className="grid grid-cols-2 gap-4 xl:gap-6">
                         {rightSkills.map((skill, index) => (
-                            <SkillItem key={skill.name} skill={skill} index={index + leftSkills.length + 1} />
+                            <SkillItem key={skill?.name} skill={skill} index={index + leftSkills.length + 1} />
                         ))}
                     </div>
                 </div>
 
                 {/* MOBILE LAYOUT (< md) - 3x3 Grid */}
                 <div className="grid grid-cols-3 gap-3 md:hidden">
-                    {skillsData.map((skill, index) => (
-                        <SkillItem key={skill.name} skill={skill} index={index} />
+                    {activeSkills.map((skill, index) => (
+                        <SkillItem key={skill?.name} skill={skill} index={index} />
                     ))}
                 </div>
             </div>
