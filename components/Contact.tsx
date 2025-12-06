@@ -29,7 +29,7 @@ const Contact: React.FC<ContactProps> = ({ id }) => {
             PRAVIN
           </h1>
           <p className="mt-6 text-sm leading-relaxed text-gray-400">
-            Trust me — let's grow together and build scalable, impactful web
+            Trust me — let&apos;s grow together and build scalable, impactful web
             solutions with the power of the MERN stack.
           </p>
         </div>
@@ -62,9 +62,7 @@ const Contact: React.FC<ContactProps> = ({ id }) => {
           {/* Contact Form */}
           <div>
             <h2 className="font-semibold mb-5 text-white text-lg tracking-wide">Get in Touch</h2>
-            <p className="text-sm mb-4 text-gray-400">
-              Have questions or thoughts? We'd love to hear from you!
-            </p>
+              Have questions or thoughts? We&apos;d love to hear from you!
             <form className="flex flex-col gap-3">
               <input
                 type="email"

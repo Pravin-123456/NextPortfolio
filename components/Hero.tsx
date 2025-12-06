@@ -3,10 +3,10 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Rocket, Github, Linkedin, Mouse } from 'lucide-react';
 import { SectionId } from '../types';
 
-const MotionH2 = motion.h2 as any;
-const MotionH1 = motion.h1 as any;
-const MotionP = motion.p as any;
-const MotionDiv = motion.div as any;
+const MotionH2 = motion.h2;
+const MotionH1 = motion.h1;
+const MotionP = motion.p;
+const MotionDiv = motion.div;
 
 interface HeroProps {
   id: SectionId;
@@ -50,7 +50,7 @@ const Hero: React.FC<HeroProps> = ({ id }) => {
             viewport={{ once: true }}
             className="text-4xl md:text-3xl font-bold text-white tracking-tight"
           >
-            Hi I'M PRAVIN
+            Hi I&apos;M PRAVIN
           </MotionH2>
 
           <MotionH1

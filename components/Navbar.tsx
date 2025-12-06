@@ -3,9 +3,9 @@ import { SectionId } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 
-const MotionNav = motion.nav as any;
-const MotionDiv = motion.div as any;
-const MotionButton = motion.button as any;
+const MotionNav = motion.nav;
+const MotionDiv = motion.div;
+const MotionButton = motion.button;
 
 interface NavbarProps {
   activeSection: SectionId;

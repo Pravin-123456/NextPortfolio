@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { SectionId } from '../types';
 import { ArrowRight } from 'lucide-react';
 
-const MotionDiv = motion.div as any;
+const MotionDiv = motion.div;
 
 interface AboutProps {
   id: SectionId;
@@ -34,10 +34,10 @@ const About: React.FC<AboutProps> = ({ id }) => {
              transition={{ duration: 0.8, delay: 0.2 }}
              className="text-gray-300 space-y-6 2xl:space-y-10 md:pl-12"
            >
-             <h3 className="text-2xl 2xl:text-4xl font-bold text-white">Hey, I'm Pravin.</h3>
+             <h3 className="text-2xl 2xl:text-4xl font-bold text-white">Hey, I&apos;m Pravin.</h3>
              <p className="text-lg 2xl:text-3xl leading-relaxed text-gray-400 2xl:leading-loose">
-               I turn ideas into fast, beautiful web apps that don't break when real people use them. 
-               React + Next.js on the front, Node.js magic in the back. Clean code, happy users — that's my thing.
+               I turn ideas into fast, beautiful web apps that don&apos;t break when real people use them. 
+               React + Next.js on the front, Node.js magic in the back. Clean code, happy users — that&apos;s my thing.
              </p>
            </MotionDiv>
         </div>

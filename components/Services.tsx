@@ -2,8 +2,8 @@ import React from 'react';
 import { SectionId } from '../types';
 import { motion } from 'framer-motion';
 
-const MotionDiv = motion.div as any;
-const MotionH2 = motion.h2 as any;
+const MotionDiv = motion.div;
+const MotionH2 = motion.h2;
 
 interface ServicesProps {
   id: SectionId;

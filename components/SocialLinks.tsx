@@ -2,7 +2,7 @@ import React from 'react';
 import { Github, Linkedin, Instagram, Mail, Facebook } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const MotionA = motion.a as any;
+const MotionA = motion.a;
 
 const SocialLinks: React.FC = () => {
   const socials = [

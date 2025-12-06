@@ -2,9 +2,9 @@ import React from 'react';
 import { SectionId } from '../types';
 import { motion } from 'framer-motion';
 
-const MotionDiv = motion.div as any;
-const MotionRect = motion.rect as any;
-const MotionCircle = motion.circle as any;
+const MotionDiv = motion.div;
+const MotionRect = motion.rect;
+const MotionCircle = motion.circle;
 
 interface SkillsProps {
   id: SectionId;

@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { SectionId, Project } from '../types';
 import { Button } from '@/components/ui/button';
 import { Github, ExternalLink } from 'lucide-react';
+import { useMutation, useQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 
-const MotionH2 = motion.h2 as any;
-const MotionDiv = motion.div as any;
+const MotionH2 = motion.h2;
+const MotionDiv = motion.div;
 
 interface ProjectsProps {
   id: SectionId;
@@ -42,6 +44,28 @@ const projects: Project[] = [
 ];
 
 const Projects: React.FC<ProjectsProps> = ({ id }) => {
+  const create = useMutation(api.projects.addProject);
+  const getProjects = useQuery(api.projects.getProject);
+
+  console.log("projects", getProjects);
+  
+  // Uncomment below if you want to automatically add a project on component mount
+  // useEffect(() => {
+  //   const createProject = async () => {
+  //     await create({
+  //       id: "grossy",
+  //       title: "GROSSY",
+  //       description:
+  //         "Grossy – Full-stack Next.js + Stripe e-commerce store for organic groceries. Features dynamic cart, wishlist, Paystack/Stripe payments, and admin dashboard. Deployed on Vercel with Supabase backend.",
+  //       tech: ["Next.js", "Stripe", "Supabase"],
+  //       image: "https://picsum.photos/id/1080/600/400",
+  //       liveUrl: "https://example.com",
+  //       githubUrl: "https://github.com",
+  //     });
+  //   };
+  //   createProject();
+  // }, [create]);
+  
   return (
     <section id={id} className="relative min-h-screen w-full bg-black py-24 2xl:py-48 flex items-center overflow-hidden">
 
