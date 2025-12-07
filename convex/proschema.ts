@@ -35,4 +35,25 @@ export default defineSchema({
     percentage: v.number(),
     position: v.string(), // "left", "center", or "right"
   }),
+
+  services: defineTable({
+    isActive: v.boolean(),
+    name: v.string(),
+    description: v.string(),
+    position: v.string(), // for ordering services
+  }),
+
+  socialLinks: defineTable({
+    platform: v.string(),
+    url: v.string(),
+    icon: v.string(), // Store icon name as string (e.g., "Github", "Linkedin")
+    isActive: v.boolean(),
+  }),
+
+  contact: defineTable({
+    title: v.string(),
+    description: v.string(),
+    email: v.string(),
+    isActive: v.boolean(),
+  }),
 });

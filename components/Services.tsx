@@ -1,6 +1,8 @@
 import React from 'react';
 import { SectionId } from '../types';
 import { motion } from 'framer-motion';
+import { useQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 
 const MotionDiv = motion.div;
 const MotionH2 = motion.h2;
@@ -9,27 +11,23 @@ interface ServicesProps {
   id: SectionId;
 }
 
-// Mock data since assets file is not available
-const serviceData = [
-  // {
-  //   name: "Web Development",
-  //   des: "I build reliable, scalable, and secure web applications using the MERN stack. From complex backends to dynamic frontends, I handle the full lifecycle."
-  // },
-  {
-    name: "UI/UX Design",
-    des: "Designing intuitive interfaces that users love. I focus on accessibility, visual hierarchy, and seamless interactions to boost engagement."
-  },
-  {
-    name: "API Integration",
-    des: "Connecting your applications with third-party services and building robust RESTful APIs to ensure smooth data flow and functionality."
-  },
-  {
-    name: "Performance Optimization",
-    des: "Speed matters. I optimize applications for maximum performance, ensuring fast load times and smooth experiences across all devices."
-  }
-];
 
 const Services: React.FC<ServicesProps> = ({ id }) => {
+  const allServices = useQuery(api.services.getServices);
+  
+  // Filter for active services only and sort by position
+  const serviceData = allServices?.filter(service => service.isActive) || [];
+
+  if (!allServices) {
+    return (
+      <section id={id} className="relative min-h-screen w-full flex flex-col justify-center py-24 overflow-hidden">
+        <div className="container mx-auto px-6 md:px-12 xl:px-16 2xl:px-24 relative z-10">
+          <div className="text-center text-white">Loading services...</div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id={id} className="relative min-h-screen w-full flex flex-col justify-center py-24 overflow-hidden">
       
@@ -74,7 +72,7 @@ const Services: React.FC<ServicesProps> = ({ id }) => {
                   {item.name}
                 </h2>
                 <p className="text-sm 2xl:text-base text-gray-300 leading-relaxed">
-                    {item.des}
+                    {item.description}
                 </p>
               </MotionDiv>
             ))}

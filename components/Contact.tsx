@@ -2,6 +2,8 @@ import React from "react";
 import { SectionId } from "../types";
 import { Send } from "lucide-react";
 import SocialLinks from "./SocialLinks";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 interface ContactProps {
   id: SectionId;
@@ -10,6 +12,16 @@ interface ContactProps {
 const Contact: React.FC<ContactProps> = ({ id }) => {
   const date = new Date();
   const year = date.getFullYear();
+  const contactInfo = useQuery(api.contact.get);
+
+  // Default values if data is loading or not set
+  const title = contactInfo?.title || "Get in Touch";
+  const description = contactInfo?.description || "Have questions or thoughts? We'd love to hear from you!";
+  const email = contactInfo?.email || "";
+
+  if (contactInfo && !contactInfo.isActive) {
+    return null;
+  }
 
   return (
     <footer
@@ -61,9 +73,9 @@ const Contact: React.FC<ContactProps> = ({ id }) => {
 
           {/* Contact Form */}
           <div>
-            <h2 className="font-semibold mb-5 text-white text-lg tracking-wide">Get in Touch</h2>
-              Have questions or thoughts? We&apos;d love to hear from you!
-            <form className="flex flex-col gap-3">
+            <h2 className="font-semibold mb-5 text-white text-lg tracking-wide">{title}</h2>
+              {description}
+            <form className="flex flex-col gap-3 mt-4">
               <input
                 type="email"
                 placeholder="Enter your email"

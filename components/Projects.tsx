@@ -107,12 +107,30 @@ const Projects: React.FC<ProjectsProps> = ({ id }) => {
                   <div className="w-full md:w-1/2 group">
                   <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                     <div className="relative overflow-hidden rounded-2xl border border-gray-800 bg-gray-900 aspect-video shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
+                      {/* Video on Hover */}
+                      {project.video && (
+                        <video
+                          src={project.video}
+                          muted
+                          loop
+                          playsInline
+                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"
+                          onMouseEnter={(e) => e.currentTarget.play()}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.pause();
+                            e.currentTarget.currentTime = 0;
+                          }}
+                        />
+                      )}
+                      
                       <img
                         src={project.image}
                         alt={project.title}
-                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500 group-hover:scale-110"
+                        className={`w-full h-full object-cover opacity-80 group-hover:opacity-0 transition-opacity duration-500 ${project.video ? 'group-hover:opacity-0' : 'group-hover:opacity-100 group-hover:scale-110'}`}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 2xl:p-10">
+                      
+                      {/* Overlay for Tech Stack */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 2xl:p-10 z-20 pointer-events-none">
                         <span className="text-white font-mono text-sm 2xl:text-xl">{project.tech.join(' • ')}</span>
                       </div>
                     </div>
@@ -123,6 +141,12 @@ const Projects: React.FC<ProjectsProps> = ({ id }) => {
                     {/* Dot for Timeline */}
                     {/* <div className={`hidden md:block absolute top-1/2 -translate-y-1/2 w-4 h-4 2xl:w-6 2xl:h-6 bg-white rounded-full border-4 2xl:border-8 border-black z-20 ${index % 2 === 0 ? '-right-[3.25rem] 2xl:-right-[3.5rem]' : '-left-[3.25rem] 2xl:-left-[3.5rem]'}`} /> */}
 
+                    {/* Project Type */}
+                    {project.type && (
+                      <span className="text-purple-500 font-mono text-sm 2xl:text-lg tracking-widest uppercase mb-2 block">
+                        {project.type}
+                      </span>
+                    )}
                     <h3 className="text-2xl 2xl:text-4xl font-bold text-white uppercase tracking-wide">{project.title}</h3>
                     <p className="text-md 2xl:text-xl text-gray-400 leading-relaxed 2xl:leading-loose max-w-lg 2xl:max-w-2xl">
                       {project.description}

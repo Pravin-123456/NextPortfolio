@@ -17,6 +17,8 @@ interface ProjectFormData {
   description: string
   tech: string
   image: string
+  video: string
+  type: string
   liveUrl: string
   githubUrl: string
   isActive: boolean
@@ -38,7 +40,10 @@ const ProjectsPage = () => {
     title: '',
     description: '',
     tech: '',
+    tech: '',
     image: '',
+    video: '',
+    type: '',
     liveUrl: '',
     githubUrl: '',
     isActive: true,
@@ -50,7 +55,10 @@ const ProjectsPage = () => {
       title: '',
       description: '',
       tech: '',
+      tech: '',
       image: '',
+      video: '',
+      type: '',
       liveUrl: '',
       githubUrl: '',
       isActive: true,
@@ -71,6 +79,8 @@ const ProjectsPage = () => {
       description: project.description,
       tech: project.tech.join(', '),
       image: project.image,
+      video: project.video || '',
+      type: project.type || '',
       liveUrl: project.liveUrl,
       githubUrl: project.githubUrl,
       isActive: project.isActive ?? true,
@@ -92,6 +102,8 @@ const ProjectsPage = () => {
       description: formData.description,
       tech: formData.tech.split(',').map(t => t.trim()),
       image: formData.image,
+      video: formData.video,
+      type: formData.type,
       liveUrl: formData.liveUrl,
       githubUrl: formData.githubUrl,
       isActive: formData.isActive,
@@ -143,6 +155,7 @@ const ProjectsPage = () => {
           <TableRow>
             <TableHead className='text-center'>ID</TableHead>
             <TableHead className='text-center'>Title</TableHead>
+            <TableHead className='text-center'>Type</TableHead>
             <TableHead className='text-center'>Description</TableHead>
             <TableHead className='text-center'>Is Active</TableHead>
             <TableHead className='text-center'>Actions</TableHead>
@@ -153,6 +166,7 @@ const ProjectsPage = () => {
             <TableRow key={project._id}>
               <TableCell className='text-center'>{project.id}</TableCell>
               <TableCell className='text-center'>{project.title}</TableCell>
+              <TableCell className='text-center'>{project.type}</TableCell>
               <TableCell className='text-center'>
                 {project.description.length > 50 
                   ? project.description.slice(0, 50) + "..." 
@@ -244,6 +258,24 @@ const ProjectsPage = () => {
               placeholder="https://..."
               value={formData.image}
               onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Video URL (Optional)</label>
+            <Input
+              placeholder="https://..."
+              value={formData.video}
+              onChange={(e) => setFormData({ ...formData, video: e.target.value })}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Type (e.g., E-Commerce)</label>
+            <Input
+              placeholder="E-Commerce"
+              value={formData.type}
+              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
             />
           </div>
 

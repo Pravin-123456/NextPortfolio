@@ -9,10 +9,13 @@
  */
 
 import type * as about from "../about.js";
+import type * as contact from "../contact.js";
 import type * as heroText from "../heroText.js";
 import type * as projects from "../projects.js";
 import type * as proschema from "../proschema.js";
+import type * as services from "../services.js";
 import type * as skills from "../skills.js";
+import type * as socialLinks from "../socialLinks.js";
 
 import type {
   ApiFromModules,
@@ -22,10 +25,13 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   about: typeof about;
+  contact: typeof contact;
   heroText: typeof heroText;
   projects: typeof projects;
   proschema: typeof proschema;
+  services: typeof services;
   skills: typeof skills;
+  socialLinks: typeof socialLinks;
 }>;
 
 /**
