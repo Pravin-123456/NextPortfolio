@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { SectionId, Project } from '../types';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Github, ExternalLink } from 'lucide-react';
 import { useMutation, useQuery } from 'convex/react';
@@ -123,10 +124,12 @@ const Projects: React.FC<ProjectsProps> = ({ id }) => {
                         />
                       )}
                       
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className={`w-full h-full object-cover opacity-80 group-hover:opacity-0 transition-opacity duration-500 ${project.video ? 'group-hover:opacity-0' : 'group-hover:opacity-100 group-hover:scale-110'}`}
+                      <Image 
+                        src={project.image} 
+                        alt={project.title} 
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                       
                       {/* Overlay for Tech Stack */}

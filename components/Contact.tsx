@@ -74,7 +74,7 @@ const Contact: React.FC<ContactProps> = ({ id }) => {
           {/* Contact Form */}
           <div>
             <h2 className="font-semibold mb-5 text-white text-lg tracking-wide">{title}</h2>
-              {description}
+            <p className="text-gray-400 text-sm">{description}</p>
             <form className="flex flex-col gap-3 mt-4">
               <input
                 type="email"

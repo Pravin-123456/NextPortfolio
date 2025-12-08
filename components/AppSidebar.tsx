@@ -9,7 +9,7 @@ const AppSidebar = () => {
     interface SidebarItem {
         title: string;
         href: string;
-        icon: React.ElementType;
+        icon: any;
     }
 
     const sidebarItems: SidebarItem[] = [

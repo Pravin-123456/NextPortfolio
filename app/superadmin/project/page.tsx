@@ -40,7 +40,7 @@ const ProjectsPage = () => {
     title: '',
     description: '',
     tech: '',
-    tech: '',
+
     image: '',
     video: '',
     type: '',
@@ -55,7 +55,7 @@ const ProjectsPage = () => {
       title: '',
       description: '',
       tech: '',
-      tech: '',
+
       image: '',
       video: '',
       type: '',

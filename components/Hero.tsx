@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Rocket, Github, Linkedin, Mouse } from 'lucide-react';
 import { SectionId } from '../types';
@@ -40,20 +41,24 @@ const Hero: React.FC<HeroProps> = ({ id }) => {
           Replace the src below with your specific image URL.
           The image currently covers the full container.
         */}
-        {!videoLoaded ? (
-        <img
+       {videoLoaded ? null : (
+        <Image
           src="https://cdn.jsdelivr.net/gh/Pravin-123456/Portfolio@assets/src/assets/background.webp"
-          alt="Hero Background"
-          className="w-full h-full object-cover"
-        />):
-         (<video
-          src="https://cdn.jsdelivr.net/gh/Pravin-123456/Portfolio@assets/src/assets/Project_video/backgroundVid.mp4"
-          autoPlay
-          loop
-          muted
-          className="w-full h-full object-cover"
-          onLoadedData={() => setVideoLoaded(true)}
+          alt="Hero Decoration"
+          fill
+          className="object-cover opacity-50"
+          priority
         />)}
+
+<video
+  src="https://cdn.jsdelivr.net/gh/Pravin-123456/Portfolio@assets/src/assets/Project_video/backgroundVid.mp4"
+  autoPlay
+  loop
+  muted
+  className="w-full h-full object-cover"
+  onLoadedData={() => setVideoLoaded(true)}
+/>
+
 
         {/* Gradient Overlay - Darkens left side for text readability, completely clear on right for subject focus */}
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent" />

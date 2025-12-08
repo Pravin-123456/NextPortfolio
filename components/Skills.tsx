@@ -1,25 +1,28 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { SectionId } from '../types';
 import { motion } from 'framer-motion';
 import { useQuery } from 'convex/react';
-import { api } from '@/convex/_generated/api';
+import { api } from '../convex/_generated/api';
 
-const MotionDiv = motion.div;
-const MotionRect = motion.rect;
-const MotionCircle = motion.circle;
+const MotionDiv = motion.div as any;
+const MotionRect = motion.rect as any;
+const MotionCircle = motion.circle as any;
 
 interface SkillsProps {
   id: SectionId;
 }
 
 interface Skill {
+  _id: string;
   name: string;
   icon: string;
   percentage: number;
-  position: string;
-  isActive?: boolean;
+  position: string; // 'left' | 'center' | 'right'
+  isActive: boolean;
+  // Computed helpers for UI logic if needed, but we can rely on position check
 }
 
 interface SkillItemProps {
@@ -30,7 +33,7 @@ interface SkillItemProps {
 // Defined BEFORE usage to prevent ReferenceError
 const SkillItem: React.FC<SkillItemProps> = ({ skill, index }) => {
     // Central Item Style (Glowing Orb)
-    if (skill?.position === 'center') {
+    if (skill.position === 'center') {
         return (
             <MotionDiv
                 initial={{ scale: 0.5, opacity: 0 }}
@@ -61,7 +64,7 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, index }) => {
                         initial={{ pathLength: 0}}
                         whileInView={{ opacity: 0.1 }}
                         whileHover={{ 
-                            pathLength: skill?.percentage / 100, 
+                            pathLength: skill.percentage / 100, 
                             opacity: 1,
                             transition: { duration: 1, ease: "easeOut" }
                         }}
@@ -71,14 +74,16 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, index }) => {
 
                 {/* Main Sphere - Theme: White/Purple Tint */}
                 <div className="absolute inset-1 rounded-full bg-gradient-to-br from-white via-purple-100 to-violet-200 shadow-[0_0_50px_rgba(168,85,247,0.5)] flex items-center justify-center z-10 overflow-hidden">
-                    <img 
-                        src={skill?.icon} 
-                        alt={skill?.name} 
+                    <Image 
+                        src={skill.icon} 
+                        alt={skill.name} 
+                        width={128}
+                        height={128}
                         className="w-12 h-12 md:w-24 md:h-24 2xl:w-32 2xl:h-32 object-contain group-hover:scale-90 group-hover:opacity-20 group-hover:grayscale transition-all duration-500" 
                     />
                     {/* Percentage Text on Hover */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span className="text-2xl md:text-5xl font-bold text-purple-600">{skill?.percentage}%</span>
+                        <span className="text-2xl md:text-5xl font-bold text-purple-600">{skill.percentage}%</span>
                     </div>
                 </div>
             </MotionDiv>
@@ -116,7 +121,7 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, index }) => {
                     strokeLinecap="round"
                     initial={{ pathLength: 0, opacity: 0 }}
                     whileHover={{ 
-                        pathLength: skill?.percentage / 100,
+                        pathLength: skill.percentage / 100,
                         opacity: 1,
                         transition: { duration: 1.2, ease: "easeInOut" }
                     }}
@@ -131,15 +136,17 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, index }) => {
 
             {/* Content Container */}
             <div className="relative z-10 flex flex-col items-center justify-center">
-                <img 
-                    src={skill?.icon} 
-                    alt={skill?.name}
+                <Image 
+                    src={skill.icon} 
+                    alt={skill.name} 
+                    width={80}
+                    height={80}
                     className="w-10 h-10 md:w-14 md:h-14 2xl:w-20 2xl:h-20 object-contain opacity-100 group-hover:opacity-20 group-hover:grayscale transition-all duration-300 group-hover:scale-90" 
                 />
                 
                 {/* Percentage Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-1">
-                    <span className="text-xl md:text-2xl font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{skill?.percentage}%</span>
+                    <span className="text-xl md:text-2xl font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{skill.percentage}%</span>
                 </div>
             </div>
         </MotionDiv>
@@ -147,23 +154,18 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, index }) => {
 };
 
 const Skills: React.FC<SkillsProps> = ({ id }) => {
-  // Fetch skills from Convex
-  const skillsData = useQuery(api.skills.getSkills);
+  const skills = useQuery(api.skills.getSkills);
 
-  // Show loading state if data hasn't loaded yet
-  if (!skillsData) {
-    return (
-      <section id={id} className="min-h-screen w-full bg-black flex flex-col justify-center py-24 relative overflow-hidden">
-        <div className="text-white text-xl text-center">Loading skills...</div>
-      </section>
-    );
-  }
+  // Filter skills by position and active status
+  // We explicitly type 'skills' usage. If skills is undefined, these will be empty arrays.
+  const activeSkills = skills?.filter(s => s.isActive) || [];
 
-  // Filter active skills and organize by position
-  const activeSkills = skillsData.filter(s => s.isActive);
-  const centerSkill = activeSkills.find(s => s.position === 'center');
+  const centerSkill = activeSkills.find(s => s.position === 'center'); 
   const leftSkills = activeSkills.filter(s => s.position === 'left');
   const rightSkills = activeSkills.filter(s => s.position === 'right');
+
+  // Fallback or loading state could be here, but for now we render what we have (or empty)
+  // Animation handles empty states gracefully usually.
 
   return (
     <section id={id} className="min-h-screen w-full bg-black flex flex-col justify-center py-24 relative overflow-hidden">
@@ -189,27 +191,31 @@ const Skills: React.FC<SkillsProps> = ({ id }) => {
                     {/* Left 2x2 Grid */}
                     <div className="grid grid-cols-2 gap-4 xl:gap-6">
                         {leftSkills.map((skill, index) => (
-                            <SkillItem key={skill?.name} skill={skill} index={index} />
+                            <SkillItem key={skill._id} skill={skill as Skill} index={index} />
                         ))}
                     </div>
 
                     {/* Center Orb */}
                     <div className="relative z-20 mx-4">
-                        <SkillItem skill={centerSkill} index={leftSkills.length} />
+                        {centerSkill && (
+                           <SkillItem skill={centerSkill as Skill} index={leftSkills.length} />
+                        )}
                     </div>
 
                     {/* Right 2x2 Grid */}
                     <div className="grid grid-cols-2 gap-4 xl:gap-6">
                         {rightSkills.map((skill, index) => (
-                            <SkillItem key={skill?.name} skill={skill} index={index + leftSkills.length + 1} />
+                            <SkillItem key={skill._id} skill={skill as Skill} index={index + leftSkills.length + 1} />
                         ))}
                     </div>
                 </div>
 
                 {/* MOBILE LAYOUT (< md) - 3x3 Grid */}
                 <div className="grid grid-cols-3 gap-3 md:hidden">
+                    {/* We can mix them or show them in specific order for mobile. 
+                        Let's just show all active skills. */}
                     {activeSkills.map((skill, index) => (
-                        <SkillItem key={skill?.name} skill={skill} index={index} />
+                        <SkillItem key={skill._id} skill={skill as Skill} index={index} />
                     ))}
                 </div>
             </div>
