@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import React from 'react';
 import Image from 'next/image';
@@ -17,17 +17,17 @@ interface HeroProps {
   id: SectionId;
 }
 
-interface HeroText {
-  title: string;
-  subtitle: string;
-  description: string;
-  isActive: boolean;
-}
+// interface HeroText {
+//   title: string;
+//   subtitle: string;
+//   description: string;
+//   isActive: boolean;
+// }
 
 const Hero: React.FC<HeroProps> = ({ id }) => {
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-  const [videoLoaded, setVideoLoaded] = React.useState(false);
+  // const [videoLoaded, setVideoLoaded] = React.useState(false);
   
   // Use Convex useQuery hook to fetch hero text data
   const heroTexts = useQuery(api.heroText.getHeroText);
@@ -41,14 +41,14 @@ const Hero: React.FC<HeroProps> = ({ id }) => {
           Replace the src below with your specific image URL.
           The image currently covers the full container.
         */}
-       {videoLoaded ? null : (
+       {/* {videoLoaded ? null : (
         <Image
           src="https://cdn.jsdelivr.net/gh/Pravin-123456/Portfolio@assets/src/assets/background.webp"
           alt="Hero Decoration"
           fill
           className="object-cover opacity-50"
           priority
-        />)}
+        />)} */}
 
 <video
   src="https://cdn.jsdelivr.net/gh/Pravin-123456/Portfolio@assets/src/assets/Project_video/backgroundVid.mp4"
@@ -56,7 +56,6 @@ const Hero: React.FC<HeroProps> = ({ id }) => {
   loop
   muted
   className="w-full h-full object-cover"
-  onLoadedData={() => setVideoLoaded(true)}
 />
 
 
