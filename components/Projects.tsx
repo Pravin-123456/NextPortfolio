@@ -48,13 +48,9 @@ const Projects: React.FC<ProjectsProps> = ({ id }) => {
   const getProjects = useQuery(api.projects.getProject);
 
   // Show loading state if data hasn't loaded yet
-  if (!getProjects) {
-    return (
-      <section id={id} className="relative min-h-screen w-full bg-black py-24 2xl:py-48 flex items-center justify-center overflow-hidden">
-        <div className="text-white text-xl">Loading projects...</div>
-      </section>
-    );
-  }
+  // Show loading state if data hasn't loaded yet
+  // Refactored to keep the root section stable for IntersectionObserver
+  const isLoading = !getProjects;
   
   // Uncomment below if you want to automatically add a project on component mount
   // useEffect(() => {
@@ -94,7 +90,9 @@ const Projects: React.FC<ProjectsProps> = ({ id }) => {
           <div className="hidden md:block absolute left-[50%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-700 to-transparent" />
 
           <div className="flex flex-col gap-24 md:gap-32 2xl:gap-56">
-            {getProjects.filter(project => project.isActive).length > 0 ? (
+            {isLoading ? (
+               <div className="text-white text-xl text-center">Loading projects...</div>
+            ) : getProjects && getProjects.filter(project => project.isActive).length > 0 ? (
               getProjects.filter(project => project.isActive).map((project, index) => (
                 <MotionDiv
                   key={project.id}

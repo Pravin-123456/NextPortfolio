@@ -1,9 +1,13 @@
-import React from "react";
+'use client';
+
+import React, { useRef, useState } from 'react';
 import { SectionId } from "../types";
 import { Send } from "lucide-react";
-import SocialLinks from "./SocialLinks";
-import { useQuery } from "convex/react";
+// import SocialLinks from "./SocialLinks";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import emailjs from '@emailjs/browser';
+import SocialLinks from './SocialLinks';
 
 interface ContactProps {
   id: SectionId;
@@ -17,7 +21,44 @@ const Contact: React.FC<ContactProps> = ({ id }) => {
   // Default values if data is loading or not set
   const title = contactInfo?.title || "Get in Touch";
   const description = contactInfo?.description || "Have questions or thoughts? We'd love to hear from you!";
-  const email = contactInfo?.email || "";
+
+  const form = useRef<HTMLFormElement>(null);
+  const [nameInput, setNameInput] = useState("");
+  const [emailInput, setEmailInput] = useState("");
+  const [messageInput, setMessageInput] = useState("");
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+
+  const sendMessage = useMutation(api.messages.send);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('sending');
+
+    try {
+      // 1. Save to Database (Reliability)
+      await sendMessage({ email: emailInput, message: messageInput });
+
+      // 2. Send Email via EmailJS
+      if (form.current) {
+         await emailjs.sendForm(
+          process.env.NEXT_PUBLIC_SERVICE_ID || "",
+          process.env.NEXT_PUBLIC_TEMPLATE_ID || "",
+          form.current,
+          { publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY || "" }
+        );
+      }
+
+      setStatus('success');
+      setEmailInput("");
+      setNameInput("");
+      setMessageInput("");
+      
+      setTimeout(() => setStatus('idle'), 3000);
+    } catch (error) {
+      console.error("Failed to send:", error);
+      setStatus('error');
+    }
+  };
 
   if (contactInfo && !contactInfo.isActive) {
     return null;
@@ -75,23 +116,57 @@ const Contact: React.FC<ContactProps> = ({ id }) => {
           <div>
             <h2 className="font-semibold mb-5 text-white text-lg tracking-wide">{title}</h2>
             <p className="text-gray-400 text-sm">{description}</p>
-            <form className="flex flex-col gap-3 mt-4">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="border border-white/10 placeholder-gray-500 outline-none w-full md:w-64 h-10 rounded-xl px-4 bg-white/5 text-white focus:border-purple-500 focus:bg-white/10 transition-all duration-300 backdrop-blur-sm"
-              />
-              <textarea
-                placeholder="Enter Your Message"
-                rows={1}
-                className="border border-white/10 placeholder-gray-500 outline-none w-full md:w-64 min-h-[40px] rounded-xl px-4 py-2 bg-white/5 text-white focus:border-purple-500 focus:bg-white/10 transition-all duration-300 backdrop-blur-sm resize-none"
-              />
+            <form ref={form} onSubmit={handleSubmit} className="flex flex-col gap-3 mt-4">
+              <div className="flex flex-col gap-1">
+                <input
+                  name="name"
+                  type="text"
+                  placeholder="Enter your name"
+                  value={nameInput}
+                  onChange={(e) => setNameInput(e.target.value)}
+                  required
+                  className="border border-white/10 placeholder-gray-500 outline-none w-full md:w-64 h-10 rounded-xl px-4 bg-white/5 text-white focus:border-purple-500 focus:bg-white/10 transition-all duration-300 backdrop-blur-sm"
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  required
+                  className="border border-white/10 placeholder-gray-500 outline-none w-full md:w-64 h-10 rounded-xl px-4 bg-white/5 text-white focus:border-purple-500 focus:bg-white/10 transition-all duration-300 backdrop-blur-sm"
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <textarea
+                  name="message"
+                  placeholder="Enter Your Message"
+                  rows={3}
+                  value={messageInput}
+                  onChange={(e) => setMessageInput(e.target.value)}
+                  required
+                  className="border border-white/10 placeholder-gray-500 outline-none w-full md:w-64 min-h-[40px] rounded-xl px-4 py-2 bg-white/5 text-white focus:border-purple-500 focus:bg-white/10 transition-all duration-300 backdrop-blur-sm resize-none"
+                />
+              </div>
+              
               <button 
                 type="submit" 
-                className="group relative w-[8rem] py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full font-bold text-white shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all flex items-center justify-center gap-2"
+                disabled={status === 'sending'}
+                className="group relative w-[8rem] py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full font-bold text-white shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                Send <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                {status === 'sending' ? (
+                  'Sending...'
+                ) : status === 'success' ? (
+                  'Sent!'
+                ) : (
+                  <>
+                    Send <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  </>
+                )}
               </button>
+              {status === 'error' && <p className="text-red-400 text-xs">Failed to send message. Try again.</p>}
             </form>
             
             {/* Social Links moved here */}

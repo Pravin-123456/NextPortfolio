@@ -1,6 +1,10 @@
+'use client';
+
 import { Home, User, Code, Briefcase, Phone, Wrench } from 'lucide-react'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from './ui/sidebar'
 import Link from 'next/link'
+import { useQuery } from 'convex/react'
+import { api } from '@/convex/_generated/api'
 
 const AppSidebar = () => {
 
@@ -11,6 +15,9 @@ const AppSidebar = () => {
         href: string;
         icon: any;
     }
+
+    const projects = useQuery(api.projects.getProject);
+    const projectCount = projects ? projects.length : 0;
 
     const sidebarItems: SidebarItem[] = [
         {
@@ -29,7 +36,7 @@ const AppSidebar = () => {
             icon: Code,
         },
         {
-            title: "Projects",
+            title: `Projects (${projectCount})`,
             href: `${admin}/project`,
             icon: Briefcase,
         },

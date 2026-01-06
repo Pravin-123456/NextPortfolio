@@ -17,6 +17,9 @@ Welcome to my professional portfolio repository. This project showcases my skill
 - **High Performance:** Optimized for speed, utilizing Next.js server components and image optimization.
 - **SEO Optimized:** Comprehensive metadata and structured data for maximum visibility.
 - **Modern Animations:** Smooth transitions and interactive elements using Framer Motion.
+- **Contact Form:** Integrated with proprietary backend logging and third-party email service (EmailJS).
+- **Global Search:** Efficient search functionality for navigating portfolio content.
+- **Admin Panel:** Complete control over all text, images, and data via Convex-powered dashboard.
 
 ## 🛠️ Installation & Setup
 
@@ -37,8 +40,14 @@ Welcome to my professional portfolio repository. This project showcases my skill
    Create a `.env.local` file and add your Convex URL:
 
    ```env
+   # Convex Deployment
    CONVEX_DEPLOYMENT=...
    NEXT_PUBLIC_CONVEX_URL=...
+
+   # EmailJS Configuration
+   NEXT_PUBLIC_SERVICE_ID=...
+   NEXT_PUBLIC_TEMPLATE_ID=...
+   NEXT_PUBLIC_PUBLIC_KEY=...
    ```
 
 4. **Run the development server:**

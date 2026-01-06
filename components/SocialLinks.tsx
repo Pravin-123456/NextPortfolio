@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Github, Linkedin, Instagram, Mail, Facebook, Twitter, Youtube, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -27,7 +29,9 @@ const SocialLinks: React.FC = () => {
   const activeLinks = socialLinks.filter(link => link.isActive);
 
   const getIcon = (iconName: string) => {
-    return iconMap[iconName] || Globe;
+    // Normalize input to title case (e.g., "github" -> "Github") to match iconMap keys
+    const normalized = iconName.charAt(0).toUpperCase() + iconName.slice(1).toLowerCase();
+    return iconMap[normalized] || iconMap[iconName] || Globe;
   };
 
   const getColor = (platform: string) => {

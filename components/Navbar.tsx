@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { SectionId } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';

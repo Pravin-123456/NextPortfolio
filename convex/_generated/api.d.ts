@@ -11,6 +11,7 @@
 import type * as about from "../about.js";
 import type * as contact from "../contact.js";
 import type * as heroText from "../heroText.js";
+import type * as messages from "../messages.js";
 import type * as projects from "../projects.js";
 import type * as proschema from "../proschema.js";
 import type * as services from "../services.js";
@@ -27,6 +28,7 @@ declare const fullApi: ApiFromModules<{
   about: typeof about;
   contact: typeof contact;
   heroText: typeof heroText;
+  messages: typeof messages;
   projects: typeof projects;
   proschema: typeof proschema;
   services: typeof services;

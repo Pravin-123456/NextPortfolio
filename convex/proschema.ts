@@ -56,4 +56,11 @@ export default defineSchema({
     email: v.string(),
     isActive: v.boolean(),
   }),
+
+  messages: defineTable({
+    email: v.string(),
+    message: v.string(),
+    status: v.string(), // "new", "read", "replied"
+    createdAt: v.number(),
+  }),
 });
