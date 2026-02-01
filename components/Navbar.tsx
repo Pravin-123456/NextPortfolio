@@ -70,7 +70,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollTo }) => {
             <button
               key={item.id}
               onClick={() => scrollTo(item.id)}
-              className={`whitespace-nowrap hover:text-brand-purple transition-colors duration-300 ${activeSection === item.id ? 'text-white font-bold' : 'text-gray-400'}`}
+              className={`whitespace-nowrap hover:text-brand-purple transition-colors duration-300 cursor-pointer ${activeSection === item.id ? 'text-white font-bold' : 'text-gray-400'}`}
             >
               {item.label}
             </button>

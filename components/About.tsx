@@ -27,81 +27,88 @@ const About: React.FC<AboutProps> = ({ id }) => {
     );
   }
   return (
-    <section id={id} className="relative min-h-screen w-full bg-black overflow-hidden flex flex-col justify-center">
-      
-      {/* Content Container */}
-      <div className="container mx-auto px-6 md:px-12 xl:px-16 2xl:px-20 relative z-10 h-full flex flex-col justify-between py-20 2xl:py-32">
-        
-        {/* Top Section: Header */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 2xl:gap-16 pt-12 2xl:pt-18 z-20">
-           <MotionDiv 
-             initial={{ opacity: 0, x: -50 }}
-             whileInView={{ opacity: 1, x: 0 }}
-             transition={{ duration: 0.8 }}
-             className="flex gap-5 items-baseline"
-           >
-             <h2 className="text-5xl md:text-4xl 2xl:text-6xl font-bold text-white">ABOUT.</h2>
-             <h2 className="text-5xl md:text-4xl 2xl:text-6xl font-bold text-white">ME</h2>
-           </MotionDiv>
+    <section id={id} className="relative min-h-screen w-full bg-black overflow-hidden flex flex-col justify-center py-16 md:py-20 lg:py-24">
 
-           <MotionDiv 
-             initial={{ opacity: 0, x: 50 }}
-             whileInView={{ opacity: 1, x: 0 }}
-             transition={{ duration: 0.8, delay: 0.2 }}
-             className="text-gray-300 space-y-6 2xl:space-y-10 md:pl-12"
-           >
-             <h3 className="text-2xl 2xl:text-4xl font-bold text-white">{aboutText?.title || "About Me"}</h3>
-             <p className="text-lg 2xl:text-3xl leading-relaxed text-gray-400 2xl:leading-loose">
-               {aboutText?.description || "Full-stack developer passionate about creating amazing web experiences."}
-             </p>
-           </MotionDiv>
+      {/* Content Container */}
+      <div className="container mx-auto px-6 md:px-12 xl:px-16 2xl:px-20 relative z-10 flex flex-col gap-12 md:gap-16 lg:gap-20">
+
+        {/* Top Section: Header */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 2xl:gap-16 z-20">
+          <MotionDiv
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="flex gap-5 items-baseline"
+          >
+            <h2 className="text-5xl md:text-4xl 2xl:text-6xl font-bold text-white">ABOUT.</h2>
+            <h2 className="text-5xl md:text-4xl 2xl:text-6xl font-bold text-white">ME</h2>
+          </MotionDiv>
+
+          <MotionDiv
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-gray-300 space-y-6 2xl:space-y-10 md:pl-12"
+          >
+            <h3 className="text-2xl 2xl:text-4xl font-bold text-white">{aboutText?.title || "About Me"}</h3>
+            <p className="text-lg 2xl:text-3xl leading-relaxed text-gray-400 2xl:leading-loose">
+              {aboutText?.description || "Full-stack developer passionate about creating amazing web experiences."}
+            </p>
+          </MotionDiv>
         </div>
 
         {/* Middle/Bottom Section: Graphic and CTA */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-end mt-20 md:mt-32 2xl:mt-48">
-           
-           {/* Large Circle & Text - Bottom Left */}
-           <div className="md:col-span-5 relative">
-             <MotionDiv 
-                initial={{ scale: 0.5, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 1 }}
-                className="w-[300px] h-[300px] md:w-[500px] md:h-[500px] 2xl:w-[700px] 2xl:h-[700px] bg-gradient-to-br from-purple-400 via-purple-600 to-indigo-900 rounded-full absolute -left-20 -bottom-40 md:-bottom-60 2xl:-bottom-80 -z-10 blur-sm"
-             />
-             <div className="relative z-10 pointer-events-none">
-                <h2 className="text-5xl md:text-7xl 2xl:text-8xl font-light text-white leading-tight">
-                  Innovation <br/> in
-                </h2>
-                <h2 className="text-5xl md:text-7xl 2xl:text-8xl font-light text-white leading-tight">
-                  Programming
-                </h2>
-             </div>
-           </div>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 items-end">
 
-           {/* Arrow and CTA - Bottom Right */}
-           <div className="md:col-span-7 flex flex-col md:flex-row items-center justify-end gap-12 2xl:gap-24 pb-12 2xl:pb-24">
-              <MotionDiv
-                animate={{ x: [0, 10, 0] }}
-                transition={{ repeat: Infinity, duration: 2 }}
+          {/* Large Circle & Text - Bottom Left */}
+          <div className="md:col-span-5 relative">
+            <MotionDiv
+              initial={{ scale: 0.5, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1 }}
+              className="w-[200px] h-[200px] md:w-[350px] md:h-[350px] lg:w-[450px] lg:h-[450px] 2xl:w-[600px] 2xl:h-[600px] bg-gradient-to-br from-purple-400 via-purple-600 to-indigo-900 rounded-full absolute -left-16 md:-left-20 -bottom-24 md:-bottom-40 lg:-bottom-52 2xl:-bottom-64 -z-10 blur-sm"
+            />
+            <div className="relative z-10 pointer-events-none">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl 2xl:text-8xl font-light text-white leading-tight">
+                Innovation <br />
+                in
+              </h2>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl 2xl:text-8xl font-light text-white leading-tight">
+                Programming
+              </h2>
+            </div>
+          </div>
+
+          {/* Arrow and CTA - Bottom Right */}
+          <div className="md:col-span-7 flex flex-col md:flex-row items-center justify-end gap-6 md:gap-12 2xl:gap-24">
+            {/* Desktop: horizontal bounce animation */}
+            <MotionDiv
+              className="hidden md:block"
+              animate={{ x: [0, 10, 0] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+            >
+              <ArrowRight className="w-20 h-20 lg:w-28 lg:h-28 2xl:w-48 2xl:h-48 text-pink-300" strokeWidth={3} />
+            </MotionDiv>
+            {/* Mobile: no animation, arrow points down */}
+            <div className="block md:hidden">
+              <ArrowRight className="w-16 h-16 text-pink-300 rotate-90" strokeWidth={3} />
+            </div>
+            {aboutText?.resume && (
+              <a
+                href={aboutText.resume}
+                download="Pravin_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                 <ArrowRight className="w-32 h-32 2xl:w-56 2xl:h-56 text-pink-300 rotate-90 md:rotate-0" strokeWidth={3} />
-              </MotionDiv>
-              {aboutText?.resume && (
-                <a 
-                  href={aboutText.resume}  
-                  download="Pravin_Resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <button className="px-8 py-3 xl:px-4 xl:py-2 2xl:px-8 2xl:py-4 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full font-bold text-white xl:text-lg 2xl:text-xl hover:scale-105 transition-transform shadow-xl">
-                    Grab my CV
-                  </button>
-                </a>
-              )}
-           </div>
+                <button className="px-8 py-3 xl:px-4 xl:py-2 2xl:px-8 2xl:py-4 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full font-bold text-white xl:text-lg 2xl:text-xl hover:scale-105 transition-transform shadow-xl">
+                  Grab my CV
+                </button>
+              </a>
+            )}
+          </div>
         </div>
       </div>
-      
+
       {/* Background Fade */}
       <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-blue-900/20 to-transparent pointer-events-none" />
     </section>
