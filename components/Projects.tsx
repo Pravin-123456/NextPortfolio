@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { SectionId, Project } from '../types';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -7,8 +7,8 @@ import { Github, ExternalLink } from 'lucide-react';
 import { useMutation, useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 
-const MotionH2 = motion.h2;
-const MotionDiv = motion.div;
+const MotionH2 = m.h2;
+const MotionDiv = m.div;
 
 interface ProjectsProps {
   id: SectionId;
@@ -51,7 +51,7 @@ const Projects: React.FC<ProjectsProps> = ({ id }) => {
   // Show loading state if data hasn't loaded yet
   // Refactored to keep the root section stable for IntersectionObserver
   const isLoading = !getProjects;
-  
+
   // Uncomment below if you want to automatically add a project on component mount
   // useEffect(() => {
   //   const createProject = async () => {
@@ -68,7 +68,7 @@ const Projects: React.FC<ProjectsProps> = ({ id }) => {
   //   };
   //   createProject();
   // }, [create]);
-  
+
   return (
     <section id={id} className="relative min-h-screen w-full bg-black py-24 2xl:py-48 flex items-center overflow-hidden">
 
@@ -91,7 +91,7 @@ const Projects: React.FC<ProjectsProps> = ({ id }) => {
 
           <div className="flex flex-col gap-24 md:gap-32 2xl:gap-56">
             {isLoading ? (
-               <div className="text-white text-xl text-center">Loading projects...</div>
+              <div className="text-white text-xl text-center">Loading projects...</div>
             ) : getProjects && getProjects.filter(project => project.isActive).length > 0 ? (
               getProjects.filter(project => project.isActive).map((project, index) => (
                 <MotionDiv
@@ -104,38 +104,38 @@ const Projects: React.FC<ProjectsProps> = ({ id }) => {
                 >
                   {/* Image Card */}
                   <div className="w-full md:w-1/2 group">
-                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                    <div className="relative overflow-hidden rounded-2xl border border-gray-800 bg-gray-900 aspect-video shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
-                      {/* Video on Hover */}
-                      {project.video && (
-                        <video
-                          src={project.video}
-                          muted
-                          loop
-                          playsInline
-                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"
-                          onMouseEnter={(e) => e.currentTarget.play()}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.pause();
-                            e.currentTarget.currentTime = 0;
-                          }}
+                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                      <div className="relative overflow-hidden rounded-2xl border border-gray-800 bg-gray-900 aspect-video shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
+                        {/* Video on Hover */}
+                        {project.video && (
+                          <video
+                            src={project.video}
+                            muted
+                            loop
+                            playsInline
+                            className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"
+                            onMouseEnter={(e) => e.currentTarget.play()}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.pause();
+                              e.currentTarget.currentTime = 0;
+                            }}
+                          />
+                        )}
+
+                        <Image
+                          src={project.image}
+                          alt={project.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         />
-                      )}
-                      
-                      <Image 
-                        src={project.image} 
-                        alt={project.title} 
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
-                      
-                      {/* Overlay for Tech Stack */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 2xl:p-10 z-20 pointer-events-none">
-                        <span className="text-white font-mono text-sm 2xl:text-xl">{project.tech.join(' • ')}</span>
+
+                        {/* Overlay for Tech Stack */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 2xl:p-10 z-20 pointer-events-none">
+                          <span className="text-white font-mono text-sm 2xl:text-xl">{project.tech.join(' • ')}</span>
+                        </div>
                       </div>
-                    </div>
-                  </a>
+                    </a>
                   </div>
                   {/* Text Content */}
                   <div className="w-full md:w-1/2 space-y-4 2xl:space-y-8 relative">

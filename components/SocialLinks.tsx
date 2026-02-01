@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { Github, Linkedin, Instagram, Mail, Facebook, Twitter, Youtube, Globe } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 
-const MotionA = motion.a;
+const MotionA = m.a;
 
 const iconMap: { [key: string]: any } = {
   Github,

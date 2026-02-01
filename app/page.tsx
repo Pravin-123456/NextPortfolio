@@ -1,15 +1,28 @@
 'use client'
 
-import About from "@/components/About";
-import Contact from "@/components/Contact";
+import dynamic from 'next/dynamic';
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
-import Projects from "@/components/Projects";
-import ScrollToTop from "@/components/ScrollToTop";
-import Services from "@/components/Services";
-import Skills from "@/components/Skills";
 import { SectionId } from "@/types";
 import { useState, useEffect } from "react";
+import ScrollToTop from "@/components/ScrollToTop";
+
+// Lazy load components that are not critical for initial paint
+const About = dynamic(() => import("@/components/About"), {
+  loading: () => <div className="min-h-screen animate-pulse bg-gray-900/20" />
+});
+const Contact = dynamic(() => import("@/components/Contact"), {
+  loading: () => <div className="min-h-screen animate-pulse bg-gray-900/20" />
+});
+const Projects = dynamic(() => import("@/components/Projects"), {
+  loading: () => <div className="min-h-screen animate-pulse bg-gray-900/20" />
+});
+const Services = dynamic(() => import("@/components/Services"), {
+  loading: () => <div className="min-h-screen animate-pulse bg-gray-900/20" />
+});
+const Skills = dynamic(() => import("@/components/Skills"), {
+  loading: () => <div className="min-h-screen animate-pulse bg-gray-900/20" />
+});
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState<SectionId>(SectionId.HOME);
@@ -31,7 +44,7 @@ export default function Home() {
           }
         });
       },
-      { 
+      {
         threshold: 0.1, // Trigger when 10% of the section is visible (better for tall sections)
         rootMargin: '-100px 0px -100px 0px' // Offset to trigger earlier
       }
@@ -52,16 +65,16 @@ export default function Home() {
 
 
   return (
-     <main className="bg-black min-h-screen text-white font-sans selection:bg-purple-500 selection:text-white">
+    <main className="bg-black min-h-screen text-white font-sans selection:bg-purple-500 selection:text-white">
       <Navbar activeSection={activeSection} scrollTo={scrollToSection} />
-      
+
       <Hero id={SectionId.HOME} />
       <About id={SectionId.ABOUT} />
       <Skills id={SectionId.SKILLS} />
       <Projects id={SectionId.PROJECTS} />
       <Services id={SectionId.SERVICES} />
       <Contact id={SectionId.CONTACT} />
-      
+
       <ScrollToTop />
     </main>
   );

@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import { SectionId } from '../types';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 
-const MotionNav = motion.nav;
-const MotionDiv = motion.div;
-const MotionButton = motion.button;
+const MotionNav = m.nav;
+const MotionDiv = m.div;
+const MotionButton = m.button;
 
 interface NavbarProps {
   activeSection: SectionId;
@@ -93,7 +93,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollTo }) => {
           >
             <AnimatePresence mode='wait'>
               {isMenuOpen ? (
-                <motion.div
+                <m.div
                   key="close"
                   initial={{ rotate: -90, opacity: 0 }}
                   animate={{ rotate: 0, opacity: 1 }}
@@ -101,9 +101,9 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollTo }) => {
                   transition={{ duration: 0.2 }}
                 >
                   <X size={32} />
-                </motion.div>
+                </m.div>
               ) : (
-                <motion.div
+                <m.div
                   key="menu"
                   initial={{ rotate: 90, opacity: 0 }}
                   animate={{ rotate: 0, opacity: 1 }}
@@ -116,7 +116,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollTo }) => {
                     <line x1="10" y1="12" x2="21" y2="12" />
                     <line x1="3" y1="18" x2="21" y2="18" />
                   </svg>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
           </MotionButton>
@@ -140,7 +140,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollTo }) => {
             {/* Navigation Links */}
             <div className="flex flex-col gap-6 relative z-10">
               {navItems.map((item, index) => (
-                <motion.button
+                <m.button
                   key={item.id}
                   initial={{ x: 100, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
@@ -160,7 +160,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollTo }) => {
                   >
                     {item.label}
                   </span>
-                </motion.button>
+                </m.button>
               ))}
             </div>
           </MotionDiv>

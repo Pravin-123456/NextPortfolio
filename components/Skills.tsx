@@ -3,13 +3,13 @@
 import React from 'react';
 import Image from 'next/image';
 import { SectionId } from '../types';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useQuery } from 'convex/react';
 import { api } from '../convex/_generated/api';
 
-const MotionDiv = motion.div as any;
-const MotionRect = motion.rect as any;
-const MotionCircle = motion.circle as any;
+const MotionDiv = m.div as any;
+const MotionRect = m.rect as any;
+const MotionCircle = m.circle as any;
 
 interface SkillsProps {
     id: SectionId;

@@ -1,13 +1,13 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { SectionId } from '../types';
 import { ArrowRight } from 'lucide-react';
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 
-const MotionDiv = motion.div;
+const MotionDiv = m.div;
 
 interface AboutProps {
   id: SectionId;

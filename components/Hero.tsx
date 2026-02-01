@@ -1,17 +1,17 @@
 // 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { m, useScroll, useTransform } from 'framer-motion';
 import { Rocket, Github, Linkedin, Mouse } from 'lucide-react';
 import { SectionId } from '../types';
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 
-const MotionH2 = motion.h2;
-const MotionH1 = motion.h1;
-const MotionP = motion.p;
-const MotionDiv = motion.div;
+const MotionH2 = m.h2;
+const MotionH1 = m.h1;
+const MotionP = m.p;
+const MotionDiv = m.div;
 
 interface HeroProps {
   id: SectionId;
@@ -28,10 +28,15 @@ const Hero: React.FC<HeroProps> = ({ id }) => {
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
   // const [videoLoaded, setVideoLoaded] = React.useState(false);
-  
+
   // Use Convex useQuery hook to fetch hero text data
   const heroTexts = useQuery(api.heroText.getHeroText);
   const heroText = heroTexts?.find((hero) => hero.isActive);
+
+  useEffect(() => {
+    const video = document.querySelector("video")
+    video?.play()
+  }, [])
 
   return (
     <section id={id} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black pt-16 md:pt-0">
@@ -41,7 +46,7 @@ const Hero: React.FC<HeroProps> = ({ id }) => {
           Replace the src below with your specific image URL.
           The image currently covers the full container.
         */}
-       {/* {videoLoaded ? null : (
+        {/* {videoLoaded ? null : (
         <Image
           src="https://cdn.jsdelivr.net/gh/Pravin-123456/Portfolio@assets/src/assets/background.webp"
           alt="Hero Decoration"
@@ -50,13 +55,17 @@ const Hero: React.FC<HeroProps> = ({ id }) => {
           priority
         />)} */}
 
-<video
-  src="https://cdn.jsdelivr.net/gh/Pravin-123456/Portfolio@assets/src/assets/Project_video/backgroundVid.mp4"
-  autoPlay
-  loop
-  muted
-  className="w-full h-full object-cover"
-/>
+        <video
+          className="w-full h-full object-cover"
+          src="https://cdn.jsdelivr.net/gh/Pravin-123456/Portfolio@assets/src/assets/Project_video/backgroundVid.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          poster="https://cdn.jsdelivr.net/gh/Pravin-123456/Portfolio@assets/src/assets/background-1654x928.webp"
+          aria-hidden="true"
+        />
 
 
         {/* Gradient Overlay - Darkens left side for text readability, completely clear on right for subject focus */}
@@ -100,16 +109,16 @@ const Hero: React.FC<HeroProps> = ({ id }) => {
             {heroText?.description || 'Building amazing web experiences with modern technologies.'}
           </MotionP>
           <a href='#projects'>
-          <MotionDiv
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="pt-6 md:pt-2 lg:pt-4 xl:pt-6 2xl:pt-12"
-          >
-            <button className="group relative px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full font-bold text-white xl:text-lg 2xl:text-2xl shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all hover:scale-105 flex items-center gap-2 xl:gap-4">
-              Projects <Rocket className="w-5 h-5 xl:w-6 xl:h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </button>
-          </MotionDiv>
+            <MotionDiv
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="pt-6 md:pt-2 lg:pt-4 xl:pt-6 2xl:pt-12"
+            >
+              <button className="group relative px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full font-bold text-white xl:text-lg 2xl:text-2xl shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all hover:scale-105 flex items-center gap-2 xl:gap-4">
+                Projects <Rocket className="w-5 h-5 xl:w-6 xl:h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              </button>
+            </MotionDiv>
           </a>
         </div>
 
