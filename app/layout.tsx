@@ -13,6 +13,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://pravinmerndev.netlify.app"),
   title: {
     default: "Pravin | Full Stack Developer | MERN & Next.js Expert",
     template: "%s | Pravin - Full Stack Developer",
