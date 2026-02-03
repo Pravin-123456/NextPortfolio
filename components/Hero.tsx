@@ -33,6 +33,11 @@ const Hero: React.FC<HeroProps> = ({ id }) => {
   const heroTexts = useQuery(api.heroText.getHeroText);
   const heroText = heroTexts?.find((hero) => hero.isActive);
 
+  const socialLinks = useQuery(api.socialLinks.get);
+  const activeSocialLinks = socialLinks?.filter(link => link.isActive) || [];
+
+  console.log(activeSocialLinks, "links")
+
   useEffect(() => {
     const video = document.querySelector("video")
     video?.play()
@@ -130,7 +135,7 @@ const Hero: React.FC<HeroProps> = ({ id }) => {
       {/* Social Links & Mouse - Absolute Bottom */}
       <div className="absolute bottom-8 md:bottom-10 lg:bottom-4 xl:bottom-8 2xl:bottom-12 left-0 right-0 z-20">
         <div className="container mx-auto px-6 md:px-12 xl:px-16 2xl:px-24 relative flex w-full justify-between items-center text-sm xl:text-lg 2xl:text-xl underline decoration-1 underline-offset-4 text-gray-300">
-          <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 xl:gap-4 2xl:gap-6 hover:text-white transition-colors">
+          <a href={activeSocialLinks?.[0]?.url ?? "#"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 xl:gap-4 2xl:gap-6 hover:text-white transition-colors">
             <Github className="w-5 h-5 xl:w-6 xl:h-6 2xl:w-8 2xl:h-8" /> <span className="hidden sm:inline">www.github.com</span><span className="sm:hidden">Github</span>
           </a>
 
@@ -142,7 +147,7 @@ const Hero: React.FC<HeroProps> = ({ id }) => {
             <Mouse className="w-6 h-6 xl:w-6 xl:h-6 2xl:w-8 2xl:h-8" />
           </MotionDiv>
 
-          <a href="#" className="flex items-center gap-2 xl:gap-4 2xl:gap-6 hover:text-white transition-colors">
+          <a href={activeSocialLinks?.[1]?.url ?? "#"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 xl:gap-4 2xl:gap-6 hover:text-white transition-colors">
             <span className="hidden md:inline">www.linkedin.com</span><span className="md:hidden">LinkedIn</span> <Linkedin className="w-5 h-5 xl:w-6 xl:h-6 2xl:w-8 2xl:h-8" />
           </a>
         </div>
