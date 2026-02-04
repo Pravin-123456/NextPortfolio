@@ -6,6 +6,7 @@ import { ConvexClientProvider } from "./ConvexClientProvider";
 const inter = Inter({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "900"],
+  display: 'swap', // default, but be explicit
 });
 
 export const viewport: Viewport = {

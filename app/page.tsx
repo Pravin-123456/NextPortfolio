@@ -7,21 +7,31 @@ import { SectionId } from "@/types";
 import { useState, useEffect } from "react";
 import ScrollToTop from "@/components/ScrollToTop";
 
+const SectionSkeleton = () => (
+  <div className="min-h-screen animate-pulse bg-gray-900/20" />
+);
+
+
 // Lazy load components that are not critical for initial paint
 const About = dynamic(() => import("@/components/About"), {
-  loading: () => <div className="min-h-screen animate-pulse bg-gray-900/20" />
+  ssr: false,
+  loading: SectionSkeleton,
 });
 const Contact = dynamic(() => import("@/components/Contact"), {
-  loading: () => <div className="min-h-screen animate-pulse bg-gray-900/20" />
+  ssr: false,
+  loading: SectionSkeleton,
 });
 const Projects = dynamic(() => import("@/components/Projects"), {
-  loading: () => <div className="min-h-screen animate-pulse bg-gray-900/20" />
+  ssr: false,
+  loading: SectionSkeleton,
 });
 const Services = dynamic(() => import("@/components/Services"), {
-  loading: () => <div className="min-h-screen animate-pulse bg-gray-900/20" />
+  ssr: false,
+  loading: SectionSkeleton,
 });
 const Skills = dynamic(() => import("@/components/Skills"), {
-  loading: () => <div className="min-h-screen animate-pulse bg-gray-900/20" />
+  ssr: false,
+  loading: SectionSkeleton,
 });
 
 export default function Home() {
